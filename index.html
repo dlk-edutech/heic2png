@@ -6,13 +6,14 @@
     <title>Chuyển đổi HEIC sang PNG</title>
     <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
     <style>
+        /* CSS su dung tieng Viet khong dau */
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
             padding: 20px; 
             background-color: #f4f4f9;
         }
-        .khung-chua { 
+        .khungChua { 
             max-width: 600px; 
             margin: auto; 
             background: #fff;
@@ -21,7 +22,7 @@
             border-radius: 10px; 
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .nut-bam { 
+        .nutBam { 
             padding: 10px 20px; 
             cursor: pointer; 
             background-color: #007bff;
@@ -30,15 +31,15 @@
             border-radius: 5px;
             font-size: 14px;
         }
-        .nut-bam:hover {
+        .nutBam:hover {
             background-color: #0056b3;
         }
-        #thong-bao { 
+        #thongBao { 
             margin-top: 15px; 
             font-weight: bold; 
             color: #333; 
         }
-        #danh-sach-ket-qua {
+        #danhSachKetQua {
             margin-top: 20px;
             text-align: left;
         }
@@ -46,35 +47,33 @@
 </head>
 <body>
 
-<div class="khung-chua">
+<div class="khungChua">
     <h2>Chuyển đổi ảnh HEIC sang PNG</h2>
-    <input type="file" id="chon-tap-tin" accept=".heic, .heif" multiple>
-    <div id="thong-bao"></div>
-    <div id="danh-sach-ket-qua"></div>
+    <input type="file" id="chonTapTin" accept=".heic, .heif" multiple>
+    <div id="thongBao"></div>
+    <div id="danhSachKetQua"></div>
 </div>
 
 <script>
-    const chonTapTin = document.getElementById('chon-tap-tin');
-    const thongBao = document.getElementById('thong-bao');
-    const danhSachKetQua = document.getElementById('danh-sach-ket-qua');
+    // JS su dung tieng Viet khong dau
+    const chonTapTin = document.getElementById('chonTapTin');
+    const thongBao = document.getElementById('thongBao');
+    const danhSachKetQua = document.getElementById('danhSachKetQua');
 
-    // Su dung async de co the dung await ben trong vong lap
     chonTapTin.addEventListener('change', async function(suKien) {
         const danhSachTapTin = suKien.target.files;
         
         if (danhSachTapTin.length === 0) return;
 
-        thongBao.innerText = 'Đang xử lý... Quá trình này có thể mất một lúc tuỳ vào số lượng ảnh.';
+        thongBao.innerText = 'Dang xu ly... Vui long cho.';
         thongBao.style.color = '#ff9800';
-        danhSachKetQua.innerHTML = ''; // Xoa ket qua cua lan chuyen doi truoc
+        danhSachKetQua.innerHTML = ''; 
 
         let soLuongThanhCong = 0;
 
-        // Lap qua tung tep da chon
         for (let i = 0; i < danhSachTapTin.length; i++) {
             const tapTin = danhSachTapTin[i];
             
-            // Tao khung hien thi cho tung anh
             const divKetQua = document.createElement('div');
             divKetQua.style.marginTop = '20px';
             divKetQua.style.paddingTop = '15px';
@@ -82,14 +81,13 @@
             divKetQua.style.textAlign = 'center';
             
             const tenFileText = document.createElement('p');
-            tenFileText.innerText = 'Đang xử lý: ' + tapTin.name;
+            tenFileText.innerText = 'Dang xu ly: ' + tapTin.name;
             tenFileText.style.fontWeight = 'bold';
             
             divKetQua.appendChild(tenFileText);
             danhSachKetQua.appendChild(divKetQua);
 
             try {
-                // Su dung thu vien heic2any de chuyen doi tung anh
                 const ketQuaKetXuat = await heic2any({
                     blob: tapTin,
                     toType: "image/png",
@@ -98,7 +96,6 @@
                 const ketQuaBlob = Array.isArray(ketQuaKetXuat) ? ketQuaKetXuat[0] : ketQuaKetXuat;
                 const duongDanAnh = URL.createObjectURL(ketQuaBlob);
                 
-                // Tao the img de hien thi
                 const anh = document.createElement('img');
                 anh.src = duongDanAnh;
                 anh.style.maxWidth = '100%';
@@ -106,24 +103,21 @@
                 anh.style.border = '1px solid #ccc';
                 anh.style.marginTop = '10px';
                 
-                // Tao the a de tai ve
                 const theTaiVe = document.createElement('a');
                 theTaiVe.href = duongDanAnh;
-                // Thay doi duoi file tu heic/heif sang png
                 const tenFileMoi = tapTin.name.replace(/\.[^/.]+$/, "") + ".png";
                 theTaiVe.download = tenFileMoi;
                 theTaiVe.style.display = 'inline-block';
                 theTaiVe.style.marginTop = '10px';
                 theTaiVe.style.textDecoration = 'none';
                 
-                // Tao nut bam ben trong the a
                 const nutTaiVe = document.createElement('button');
-                nutTaiVe.className = 'nut-bam';
-                nutTaiVe.innerText = 'Tải ảnh ' + tenFileMoi;
+                nutTaiVe.className = 'nutBam';
+                nutTaiVe.innerText = 'Tai anh ' + tenFileMoi;
                 
                 theTaiVe.appendChild(nutTaiVe);
                 
-                tenFileText.innerText = 'Thành công: ' + tapTin.name;
+                tenFileText.innerText = 'Thanh cong: ' + tapTin.name;
                 tenFileText.style.color = 'green';
                 
                 divKetQua.appendChild(anh);
@@ -133,20 +127,20 @@
                 soLuongThanhCong++;
             } catch (loi) {
                 console.error(loi);
-                tenFileText.innerText = 'Lỗi khi chuyển đổi: ' + tapTin.name;
+                // In truc tiep chi tiet loi ra de de bat benh
+                tenFileText.innerText = 'Loi: ' + tapTin.name + ' - Chi tiet: ' + (loi.message || loi);
                 tenFileText.style.color = 'red';
             }
         }
 
-        // Cap nhat thong bao tong the
         if (soLuongThanhCong === danhSachTapTin.length) {
-            thongBao.innerText = 'Đã chuyển đổi thành công tất cả ' + soLuongThanhCong + ' ảnh!';
+            thongBao.innerText = 'Da chuyen doi thanh cong tat ca!';
             thongBao.style.color = 'green';
         } else if (soLuongThanhCong > 0) {
-            thongBao.innerText = 'Đã chuyển đổi xong, nhưng có một số tệp bị lỗi.';
+            thongBao.innerText = 'Da chuyen doi xong, nhung co loi o mot vai file.';
             thongBao.style.color = '#ff9800';
         } else {
-            thongBao.innerText = 'Có lỗi xảy ra, không thể chuyển đổi tệp nào.';
+            thongBao.innerText = 'Khong the chuyen doi file nao. Vui long kiem tra loi ben duoi.';
             thongBao.style.color = 'red';
         }
     });
